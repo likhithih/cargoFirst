@@ -10,6 +10,18 @@ router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
   console.log('Register request received:', { username, email, password: password ? 'provided' : 'missing' });
 
+  // Input validation
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
+
   try {
     console.log('Checking JWT_SECRET...');
     // Defensive: ensure JWT secret is configured before attempting to sign tokens
