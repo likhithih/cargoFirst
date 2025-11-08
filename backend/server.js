@@ -5,8 +5,6 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import jobRoutes from './routes/jobs.js';
 
-const MONGO_URI = process.env.MONGO_URI;
-
 dotenv.config();
 
 // Ensure required environment variables are present early so we fail fast
@@ -18,14 +16,13 @@ if (missing.length) {
   process.exit(1);
 }
 
+const MONGO_URI = process.env.MONGO_URI;
+
 const app = express();
 
-// Middleware
-app.use(cors({
-    origin: 'https://comfy-douhua-f6316a.netlify.app', // your frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],          // allowed HTTP methods
-    credentials: true                                   // allow cookies if needed
-}));
+// Middleware{
+    
+app.use(cors());
 app.use(express.json());
 
 // MongoDB connection

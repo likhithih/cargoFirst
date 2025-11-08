@@ -12,7 +12,7 @@ const JobList = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/jobs`, {
+      const res = await axios.get(`http://localhost:5000/api/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -25,7 +25,7 @@ const JobList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/jobs/${id}`, {
+      await axios.delete(`http://localhost:5000/api/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
