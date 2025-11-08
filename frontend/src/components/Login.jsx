@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import signupImage from "../assets/signup.jpg";
+import loginImage from "../assets/login.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,20 +29,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 overflow-hidden px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100 overflow-hidden px-4">
       <div className="py-10 px-4 w-full max-w-6xl">
         <div className="grid lg:grid-cols-2 items-center gap-8 transition-all duration-700 ease-in-out">
           {/* === Image Section === */}
           <div
             className={`relative transition-transform duration-700 ease-in-out transform ${
               isRegister
-                ? "lg:order-first lg:translate-x-[-10px]"
-                : "lg:order-last lg:translate-x-[10px]"
+                ? "lg:order-first lg:-translate-x-2.5"
+                : "lg:order-last lg:translate-x-2.5"
             }`}
           >
             <img
-              src="https://readymadeui.com/login-image.webp"
-              alt="login visual"
+              src={isRegister ? signupImage : loginImage}
+              alt={isRegister ? "signup visual" : "login visual"}
               className="w-full max-lg:w-4/5 mx-auto block rounded-xl shadow-lg object-cover transition-all duration-700 hover:scale-[1.03]"
             />
           </div>
@@ -121,7 +123,7 @@ const Login = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                  className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white py-2.5 rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
                   {isRegister ? "Register" : "Sign In"}
                 </button>

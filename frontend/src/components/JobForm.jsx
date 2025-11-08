@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { FaBuilding, FaPenFancy, FaCalendarAlt, FaClipboardList } from "react-icons/fa";
 
 const JobForm = () => {
   const { token } = useAuth();
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    lastDate: '',
-    company: ''
+    title: "",
+    description: "",
+    lastDate: "",
+    company: "",
   });
 
   const handleChange = (e) => {
@@ -18,67 +19,82 @@ const JobForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/jobs', formData, {
+      await axios.post("http://localhost:5000/api/jobs", formData, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      alert('Job posted successfully!');
-      setFormData({ title: '', description: '', lastDate: '', company: '' });
+      alert("Job posted successfully!");
+      setFormData({ title: "", description: "", lastDate: "", company: "" });
     } catch (error) {
-      console.error('Error:', error.response?.data || error.message);
-      alert(error.response?.data?.message || 'Error posting job');
+      console.error("Error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Error posting job");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Post a Job</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700">Job Title</label>
+    <div className="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center">Post a Job</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+
+        <div className="relative">
+          <FaClipboardList className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
+            placeholder="Job Title"
+            className="w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Job Description</label>
+
+
+        <div className="relative">
+          <FaPenFancy className="absolute top-3 left-3 text-gray-400" />
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
+            placeholder="Job Description"
+            className="w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300 resize-none"
+            rows={4}
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Last Date for Application</label>
+
+
+        <div className="relative">
+          <FaCalendarAlt className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
             type="date"
             name="lastDate"
             value={formData.lastDate}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Company Name</label>
+
+      
+        <div className="relative">
+          <FaBuilding className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             name="company"
             value={formData.company}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
+            placeholder="Company Name"
+            className="w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
             required
           />
         </div>
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium shadow-md hover:shadow-xl hover:bg-blue-600 transition-all duration-300"
+        >
           Submit
         </button>
       </form>
