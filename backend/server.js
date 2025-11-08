@@ -5,6 +5,15 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Ensure required environment variables are present early so we fail fast
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET'];
+const missing = requiredEnv.filter((k) => !process.env[k]);
+if (missing.length) {
+  console.error(`Missing required environment variables: ${missing.join(', ')}`);
+  // Exit so the platform (or developer) notices the misconfiguration immediately
+  process.exit(1);
+}
+
 const app = express();
 
 // Middleware
