@@ -10,7 +10,7 @@ const JobList = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/jobs');
+      const res = await axios.get('https://cargofirst.onrender.com/api/jobs');
       setJobs(res.data);
     } catch (error) {
       console.error('Error fetching jobs', error);
@@ -19,7 +19,7 @@ const JobList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/jobs/${id}`);
+      await axios.delete(`https://cargofirst.onrender.com/api/jobs/${id}`);
       setJobs(jobs.filter(job => job._id !== id));
     } catch (error) {
       alert('Error deleting job');
