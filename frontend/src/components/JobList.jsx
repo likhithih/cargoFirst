@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const JobList = () => {
+  const { token } = useAuth();
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
@@ -10,7 +12,11 @@ const JobList = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('https://cargofirst-back.onrender.com/api/jobs');
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/jobs`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setJobs(res.data);
     } catch (error) {
       console.error('Error fetching jobs', error);
@@ -19,7 +25,11 @@ const JobList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://cargofirst-back.onrender.com/api/jobs/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/jobs/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setJobs(jobs.filter(job => job._id !== id));
     } catch (error) {
       alert('Error deleting job');
