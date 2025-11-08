@@ -15,6 +15,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
+    user = await User.findOne({ username });
+    if (user) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
     user = new User({ username, email, password });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
@@ -23,7 +28,7 @@ router.post('/register', async (req, res) => {
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token });
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -47,7 +52,7 @@ router.post('/login', async (req, res) => {
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token });
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }

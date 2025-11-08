@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [isRegister, setIsRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login, register } = useAuth();
   const navigate = useNavigate();
 
@@ -27,9 +29,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 overflow-hidden px-4">
       <div className="py-10 px-4 w-full max-w-6xl">
-        <div
-          className={`grid lg:grid-cols-2 items-center gap-8 transition-all duration-700 ease-in-out`}
-        >
+        <div className="grid lg:grid-cols-2 items-center gap-8 transition-all duration-700 ease-in-out">
           {/* === Image Section === */}
           <div
             className={`relative transition-transform duration-700 ease-in-out transform ${
@@ -59,73 +59,69 @@ const Login = () => {
                 </p>
               </div>
 
+              {/* Username Field */}
               {isRegister && (
-                <div>
+                <div className="relative">
                   <label className="text-slate-900 text-sm font-medium mb-2 block">
                     Username
                   </label>
+                  <FaUser className="absolute left-3 top-[38px] text-slate-400" />
                   <input
-                    name="username"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                    className="w-full text-sm text-slate-900 border border-slate-300 pl-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                     placeholder="Enter username"
+                    className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                   />
                 </div>
               )}
 
-              <div>
+              {/* Email Field */}
+              <div className="relative">
                 <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Email
                 </label>
+                <FaEnvelope className="absolute left-3 top-[38px] text-slate-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full text-sm text-slate-900 border border-slate-300 pl-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                   placeholder="Enter email"
+                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                 />
               </div>
 
-              <div>
+              {/* Password Field */}
+              <div className="relative">
                 <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Password
                 </label>
+                <FaLock className="absolute left-3 top-[38px] text-slate-400" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full text-sm text-slate-900 border border-slate-300 pl-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                   placeholder="Enter password"
+                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 pr-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
 
-              {!isRegister && (
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm text-slate-700">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                    />
-                    Remember me
-                  </label>
-                  <a
-                    href="#"
-                    className="text-blue-600 text-sm font-medium hover:underline"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              )}
+              
 
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white py-2.5 rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
                   {isRegister ? "Register" : "Sign In"}
                 </button>
