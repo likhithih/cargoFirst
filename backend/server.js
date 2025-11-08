@@ -19,11 +19,15 @@ if (missing.length) {
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://comfy-douhua-f6316a.netlify.app', // your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],          // allowed HTTP methods
+    credentials: true                                   // allow cookies if needed
+}));
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(MONGO_URl, {
+mongoose.connect(MONGO_URl  , {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
