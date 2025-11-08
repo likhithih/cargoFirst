@@ -19,7 +19,7 @@ const JobForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://cargofirst.onrender.com/api/jobs", formData, {
+      await axios.post("https://cargofirst-back.onrender.com/api/jobs", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
