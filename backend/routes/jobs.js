@@ -1,6 +1,6 @@
-const express = require('express');
-const Job = require('../models/Job');
-const auth = require('../middleware/auth');
+import express from 'express';
+import Job from '../models/Job.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -85,4 +85,4 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
