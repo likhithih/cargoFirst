@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-import MONGO_URl from process.env.MONGO_URl;
+const MONGO_URI = process.env.MONGO_URI;
 
 
 dotenv.config();
