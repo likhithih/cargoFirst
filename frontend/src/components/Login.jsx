@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
-import signupImage from "../assets/signup.jpg";
-import loginImage from "../assets/login.jpg";
+
+const signupImage = "/signup.jpg";
+const loginImage = "/login.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
