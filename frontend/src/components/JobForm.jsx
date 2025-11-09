@@ -12,6 +12,8 @@ const JobForm = () => {
     company: "",
   });
 
+  const API_BASE = import.meta.env.VITE_BACKEND_URL; // <- dynamic backend URL
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -19,7 +21,7 @@ const JobForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/jobs`, formData, {
+      await axios.post(`${API_BASE}/api/jobs`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,7 +38,7 @@ const JobForm = () => {
     <div className="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
       <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center">Post a Job</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
-
+        {/* Job Title */}
         <div className="relative">
           <FaClipboardList className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -50,7 +52,7 @@ const JobForm = () => {
           />
         </div>
 
-
+        {/* Description */}
         <div className="relative">
           <FaPenFancy className="absolute top-3 left-3 text-gray-400" />
           <textarea
@@ -64,7 +66,7 @@ const JobForm = () => {
           />
         </div>
 
-
+        {/* Last Date */}
         <div className="relative">
           <FaCalendarAlt className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -77,7 +79,7 @@ const JobForm = () => {
           />
         </div>
 
-      
+        {/* Company */}
         <div className="relative">
           <FaBuilding className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -91,6 +93,7 @@ const JobForm = () => {
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium shadow-md hover:shadow-xl hover:bg-blue-600 transition-all duration-300"

@@ -8,7 +8,7 @@ import jobRoutes from './routes/jobs.js';
 dotenv.config();
 
 // Ensure required environment variables are present early so we fail fast
-const requiredEnv = ['MONGO_URI', 'JWT_SECRET'];
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET', 'FRONTEND_URL'];
 const missing = requiredEnv.filter((k) => !process.env[k]);
 if (missing.length) {
   console.error(`Missing required environment variables: ${missing.join(', ')}`);
@@ -22,7 +22,10 @@ const app = express();
 
 // Middleware{
     
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL, 
+  credentials: true,
+}));
 app.use(express.json());
 
 // MongoDB connection

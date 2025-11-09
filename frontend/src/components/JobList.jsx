@@ -6,13 +6,16 @@ const JobList = () => {
   const { token } = useAuth();
   const [jobs, setJobs] = useState([]);
 
+  // Use environment variable for backend URL
+  const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     fetchJobs();
   }, []);
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/jobs`, {
+      const res = await axios.get(`${API_BASE}/api/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -25,7 +28,7 @@ const JobList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/jobs/${id}`, {
+      await axios.delete(`${API_BASE}/api/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,7 +48,9 @@ const JobList = () => {
             <h3 className="text-xl font-semibold">{job.title}</h3>
             <p className="text-gray-600">{job.description}</p>
             <p className="text-sm text-gray-500">Company: {job.company}</p>
-            <p className="text-sm text-gray-500">Last Date: {new Date(job.lastDate).toLocaleDateString()}</p>
+            <p className="text-sm text-gray-500">
+              Last Date: {new Date(job.lastDate).toLocaleDateString()}
+            </p>
             <button
               onClick={() => handleDelete(job._id)}
               className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
