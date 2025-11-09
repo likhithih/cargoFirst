@@ -17,6 +17,10 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  vacancies: {
+    type: Number,
+    required: true,
+  },
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

@@ -7,7 +7,7 @@ const router = express.Router();
 // Get all jobs
 router.get('/', auth, async (req, res) => {
   try {
-    const jobs = await Job.find({});
+    const jobs = await Job.find({}).populate('postedBy', 'username _id');
     res.json(jobs);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
 
 // Create a new job
 router.post('/', auth, async (req, res) => {
-  const { title, description, lastDate, company } = req.body;
+  const { title, description, lastDate, company, vacancies } = req.body;
 
   try {
     if (!req.user || !req.user.id) {
@@ -31,6 +31,7 @@ router.post('/', auth, async (req, res) => {
       description,
       lastDate,
       company,
+      vacancies,
       postedBy: req.user.id
     });
 
@@ -47,7 +48,7 @@ router.post('/', auth, async (req, res) => {
 
 // Update a job
 router.put('/:id', auth, async (req, res) => {
-  const { title, description, lastDate, company } = req.body;
+  const { title, description, lastDate, company, vacancies } = req.body;
 
   try {
     let job = await Job.findById(req.params.id);
@@ -59,7 +60,7 @@ router.put('/:id', auth, async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    job = await Job.findByIdAndUpdate(req.params.id, { title, description, lastDate, company }, { new: true });
+    job = await Job.findByIdAndUpdate(req.params.id, { title, description, lastDate, company, vacancies }, { new: true });
     res.json(job);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

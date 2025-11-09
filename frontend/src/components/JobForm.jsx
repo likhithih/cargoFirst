@@ -1,118 +1,143 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { FaBuilding, FaPenFancy, FaCalendarAlt, FaClipboardList, FaCheckCircle } from "react-icons/fa";
 
 const JobForm = () => {
   const { token } = useAuth();
+  const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     lastDate: "",
     company: "",
+    vacancies: "",
   });
-  const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
-  const API_BASE = import.meta.env.VITE_BACKEND_URL;
+  const [toast, setToast] = useState({ show: false, message: "", type: "success" });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "vacancies" ? (value === "" ? "" : Number(value)) : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await axios.post(`${API_BASE}/api/jobs`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      // Show success toast
       setToast({ show: true, message: "Job posted successfully!", type: "success" });
-      setFormData({ title: "", description: "", lastDate: "", company: "" });
-
-      // Hide toast after 3 seconds
-      setTimeout(() => setToast({ ...toast, show: false }), 3000);
+      setFormData({ title: "", description: "", lastDate: "", company: "", vacancies: "" });
     } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
-
-      // Show error toast
-      setToast({ show: true, message: error.response?.data?.message || "Error posting job", type: "error" });
-      setTimeout(() => setToast({ ...toast, show: false }), 3000);
+      console.error((error && error.response && error.response.data) || (error && error.message) || error);
+      setToast({ show: true, message: (error && error.response && error.response.data && error.response.data.message) || "Error posting job", type: "error" });
+    } finally {
+      setLoading(false);
+      setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 3000);
     }
   };
 
-  const FloatingInput = ({ label, name, type = "text", icon: Icon, rows }) => (
-    <div className="relative w-full">
-      {Icon && <Icon className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400 pointer-events-none" />}
-      {type === "textarea" ? (
-        <textarea
-          name={name}
-          value={formData[name]}
-          onChange={handleChange}
-          rows={rows || 4}
-          className="peer w-full pl-12 pr-3 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all duration-300 resize-none"
-          placeholder=" "
-          required
-        />
-      ) : (
-        <input
-          type={type}
-          name={name}
-          value={formData[name]}
-          onChange={handleChange}
-          className="peer w-full pl-12 pr-3 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all duration-300"
-          placeholder=" "
-          required
-        />
-      )}
-      <label className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-blue-500 peer-focus:text-sm pointer-events-none">
-        {label}
-      </label>
-    </div>
-  );
-
   return (
-    <div className="relative max-w-lg mx-auto">
-      {/* Toast */}
+    <div className="min-h-screen bg-gradient-to-tr from-blue-50 to-blue-100 flex items-center justify-center p-4">
       {toast.show && (
         <div
-          className={`fixed top-6 right-6 flex items-center space-x-2 p-4 rounded-lg shadow-lg text-white transition-all duration-500
-          ${toast.type === "success" ? "bg-green-500" : "bg-red-500"} animate-slide-in`}
+          className={`fixed top-6 right-6 p-4 rounded-lg shadow-lg text-white transform transition-transform duration-300 ${
+            toast.type === "success" ? "bg-green-500" : "bg-red-500"
+          }`}
         >
-          <FaCheckCircle className="w-5 h-5" />
-          <span>{toast.message}</span>
+          <span className="font-medium">{toast.message}</span>
         </div>
       )}
 
-      <div className="bg-gradient-to-r from-white via-blue-50 to-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500">
-        <h2 className="text-3xl font-extrabold text-blue-600 mb-8 text-center drop-shadow-md">Post a Job</h2>
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-10 border border-gray-200">
+        <h2 className="text-4xl font-extrabold text-blue-600 mb-8 text-center tracking-tight">
+          Post a Job
+        </h2>
+
         <form onSubmit={handleSubmit} className="space-y-6">
-          <FloatingInput label="Job Title" name="title" icon={FaClipboardList} />
-          <FloatingInput label="Job Description" name="description" type="textarea" icon={FaPenFancy} rows={5} />
-          <FloatingInput  name="lastDate" type="date" icon={FaCalendarAlt} />
-          <FloatingInput label="Company Name" name="company" icon={FaBuilding} />
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Job Title</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              placeholder="Enter job title"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Job Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={5}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm resize-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              placeholder="Write a detailed job description..."
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Last Date</label>
+            <input
+              type="date"
+              name="lastDate"
+              value={formData.lastDate}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name</label>
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              placeholder="Company hiring for this job"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Number of Vacancies</label>
+            <input
+              type="number"
+              name="vacancies"
+              value={formData.vacancies}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              placeholder="How many positions available?"
+              required
+            />
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold shadow-md hover:shadow-lg hover:bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 transform hover:-translate-y-1"
+            disabled={loading}
+            className={`w-full py-3 rounded-xl font-semibold text-lg text-white transition-all duration-300 ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed shadow-inner"
+                : "bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl"
+            }`}
           >
-            Post Job
+            {loading ? "Posting..." : "Post Job"}
           </button>
         </form>
       </div>
-
-      {/* Toast animation keyframes */}
-      <style>
-        {`
-          @keyframes slideIn {
-            0% { opacity: 0; transform: translateX(50px); }
-            100% { opacity: 1; transform: translateX(0); }
-          }
-          .animate-slide-in {
-            animation: slideIn 0.5s ease forwards;
-          }
-        `}
-      </style>
     </div>
   );
 };

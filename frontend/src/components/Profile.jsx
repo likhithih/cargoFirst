@@ -6,29 +6,35 @@ const Profile = () => {
   const { user } = useAuth();
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h2 className="text-3xl font-bold mb-6 text-blue-600 text-center">Profile</h2>
-      {user ? (
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 bg-blue-50 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-            <FaUser className="text-blue-500 text-xl" />
-            <div>
-              <p className="text-sm text-gray-500">Username</p>
-              <p className="text-lg font-medium text-gray-800">{user.username}</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-500 transform hover:-translate-y-1">
+        <h2 className="text-4xl font-extrabold mb-8 text-blue-600 text-center tracking-tight">
+          Profile
+        </h2>
+        {user ? (
+          <div className="space-y-6">
+            {/* Username */}
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:scale-105">
+              <FaUser className="text-blue-500 text-2xl" />
+              <div>
+                <p className="text-sm text-gray-500">Username</p>
+                <p className="text-lg font-semibold text-gray-800">{user.username}</p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 bg-blue-50 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-            <FaEnvelope className="text-blue-500 text-xl" />
-            <div>
-              <p className="text-sm text-gray-500">Email</p>
-              <p className="text-lg font-medium text-gray-800">{user.email}</p>
+            {/* Email */}
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:scale-105">
+              <FaEnvelope className="text-blue-500 text-2xl" />
+              <div>
+                <p className="text-sm text-gray-500">Email</p>
+                <p className="text-lg font-semibold text-gray-800">{user.email}</p>
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <p className="text-center text-gray-500">Loading...</p>
-      )}
+        ) : (
+          <p className="text-center text-gray-500 animate-pulse">Loading...</p>
+        )}
+      </div>
     </div>
   );
 };
