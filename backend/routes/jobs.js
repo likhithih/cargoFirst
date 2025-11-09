@@ -4,10 +4,10 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all jobs for the user
+// Get all jobs
 router.get('/', auth, async (req, res) => {
   try {
-    const jobs = await Job.find({ postedBy: req.user.id });
+    const jobs = await Job.find({});
     res.json(jobs);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
