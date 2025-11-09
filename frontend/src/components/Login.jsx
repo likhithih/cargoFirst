@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import signupImage from "../assets/signup.jpg";
 import loginImage from "../assets/login.jpg";
 
@@ -13,7 +11,6 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const { login, register } = useAuth();
   const navigate = useNavigate();
 
@@ -22,44 +19,38 @@ const Login = () => {
     try {
       if (isRegister) {
         await register(username, email, password);
-        toast.success("Registered successfully!");
       } else {
         await login(email, password);
-        toast.success("Logged in successfully!");
       }
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong!");
+      alert(error.response?.data?.message || "Error");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 px-4">
-      <ToastContainer position="top-right" autoClose={3000} />
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100 overflow-hidden px-4">
       <div className="py-10 px-4 w-full max-w-6xl">
-        <div className="grid lg:grid-cols-2 items-center gap-8">
-
+        <div className="grid lg:grid-cols-2 items-center gap-8 transition-all duration-700 ease-in-out">
           {/* === Image Section === */}
           <div
-            className={`relative w-full max-lg:w-4/5 mx-auto transition-transform duration-700 ease-in-out transform
-              ${isRegister ? "lg:order-first lg:-translate-x-2" : "lg:order-last lg:translate-x-2"}
-            `}
+            className={`relative transition-transform duration-700 ease-in-out transform ${
+              isRegister
+                ? "lg:order-first lg:-translate-x-2.5"
+                : "lg:order-last lg:translate-x-2.5"
+            }`}
           >
             <img
               src={isRegister ? signupImage : loginImage}
               alt={isRegister ? "signup visual" : "login visual"}
-              className="w-full rounded-2xl shadow-lg object-cover transition-transform duration-700 hover:scale-[1.03]"
+              className="w-full max-lg:w-4/5 mx-auto block rounded-xl shadow-lg object-cover transition-all duration-700 hover:scale-[1.03]"
             />
           </div>
 
           {/* === Form Card === */}
-          <div
-            className={`border border-slate-200 bg-white/90 backdrop-blur-md rounded-3xl p-8 max-w-md w-full shadow-lg mx-auto transform transition-all duration-700 hover:shadow-2xl hover:scale-[1.02]
-              ${isRegister ? "lg:order-last lg:translate-x-2" : "lg:order-first lg:-translate-x-2"}
-            `}
-          >
+          <div className="border border-slate-200 bg-white/90 backdrop-blur-md rounded-2xl p-8 max-w-md w-full shadow-[0_4px_24px_-4px_rgba(0,0,0,0.1)] mx-auto transform transition-all duration-500 hover:shadow-blue-200 hover:scale-[1.02]">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="mb-8">
+              <div className="mb-10">
                 <h1 className="text-slate-900 text-3xl font-semibold transition-all duration-500">
                   {isRegister ? "Create Account" : "Sign in"}
                 </h1>
@@ -76,14 +67,14 @@ const Login = () => {
                   <label className="text-slate-900 text-sm font-medium mb-2 block">
                     Username
                   </label>
-                  <FaUser className="absolute left-3 top-1/2 translate-y-1/2 text-slate-400" />
+                  <FaUser className="absolute left-3 top-[38px] text-slate-400" />
                   <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
                     placeholder="Enter username"
-                    className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                    className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                   />
                 </div>
               )}
@@ -93,14 +84,14 @@ const Login = () => {
                 <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Email
                 </label>
-                  <FaEnvelope className="absolute left-3 top-1/2 translate-y-1/2 text-slate-400" />
+                <FaEnvelope className="absolute left-3 top-[38px] text-slate-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter email"
-                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                 />
               </div>
 
@@ -109,35 +100,35 @@ const Login = () => {
                 <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Password
                 </label>
-                <FaLock className="absolute left-3 top-1/2 translate-y-1/2 text-slate-400" />
+                <FaLock className="absolute left-3 top-[38px] text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Enter password"
-                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 pr-10 py-3 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full text-sm text-slate-900 border border-slate-300 pl-10 pr-10 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-300"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 translate-y-1/2 text-slate-500 hover:text-slate-700"
+                  className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-2">
+              
+
+              <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                  className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white py-2.5 rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                 >
                   {isRegister ? "Register" : "Sign In"}
                 </button>
               </div>
 
-              {/* Switch form link */}
               <p className="text-sm text-center text-slate-600 mt-4">
                 {isRegister ? (
                   <>
