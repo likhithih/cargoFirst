@@ -1,3 +1,0 @@
-- [ ] Edit frontend/src/context/AuthContext.jsx to replace import.meta.env.VITE_API_URL with 'http://localhost:5000'
-- [ ] Edit frontend/src/components/JobForm.jsx to replace process.env.REACT_APP_API_URL with 'http://localhost:5000'
-- [ ] Edit frontend/src/components/JobList.jsx to replace process.env.REACT_APP_API_URL with 'http://localhost:5000'
