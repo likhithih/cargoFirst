@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 
-const signupImage = "/signup.jpg";
-const loginImage = "/login.jpg";
+const loginImages = ["/login.jpg", "/form.jpg"];
+const registerImages = ["/signup.jpg", "/log.jpg"];
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,8 +12,17 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { login, register } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const currentImages = isRegister ? registerImages : loginImages;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % currentImages.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isRegister]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,8 +51,8 @@ const Login = () => {
             }`}
           >
             <img
-              src={isRegister ? signupImage : loginImage}
-              alt={isRegister ? "signup visual" : "login visual"}
+              src={(isRegister ? registerImages : loginImages)[currentImageIndex]}
+              alt={isRegister ? "register visual" : "login visual"}
               className="w-full max-lg:w-4/5 mx-auto block rounded-xl shadow-lg object-cover transition-all duration-700 hover:scale-[1.03]"
             />
           </div>
