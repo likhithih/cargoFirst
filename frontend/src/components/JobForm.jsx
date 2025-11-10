@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 const JobForm = () => {
   const { token } = useAuth();
+  const { theme } = useTheme();
   const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
   const [formData, setFormData] = useState({
@@ -44,7 +46,7 @@ const JobForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-50 to-blue-100 flex items-center justify-center p-4">
+    <div className={`min-h-screen flex items-center justify-center p-4 transition-all duration-500 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-tr from-blue-50 to-blue-100'}`}>
       {toast.show && (
         <div
           className={`fixed top-6 right-6 p-4 rounded-lg shadow-lg text-white transform transition-transform duration-300 ${
@@ -55,71 +57,71 @@ const JobForm = () => {
         </div>
       )}
 
-      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-10 border border-gray-200">
-        <h2 className="text-4xl font-extrabold text-blue-600 mb-8 text-center tracking-tight">
+      <div className={`w-full max-w-lg rounded-3xl shadow-2xl p-10 border transition-all duration-500 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'}`}>
+        <h2 className={`text-4xl font-extrabold mb-8 text-center tracking-tight ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
           Post a Job
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Job Title</label>
+            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Job Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
               placeholder="Enter job title"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Job Description</label>
+            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Job Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows={5}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm resize-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm resize-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
               placeholder="Write a detailed job description..."
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Last Date</label>
+            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Last Date</label>
             <input
               type="date"
               name="lastDate"
               value={formData.lastDate}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100' : 'border-gray-300'}`}
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name</label>
+            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Company Name</label>
             <input
               type="text"
               name="company"
               value={formData.company}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
               placeholder="Company hiring for this job"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Number of Vacancies</label>
+            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Number of Vacancies</label>
             <input
               type="number"
               name="vacancies"
               value={formData.vacancies}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300"
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
               placeholder="How many positions available?"
               required
             />
