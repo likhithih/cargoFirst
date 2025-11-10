@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 import {
   BarChart,
   Bar,
@@ -26,13 +27,23 @@ const data = [
 ];
 
 const CustomerAnalysis = () => {
+  const { theme } = useTheme();
+
   return (
-    <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100 transform transition-all duration-300 hover:shadow-3xl">
+    <div className={`rounded-3xl shadow-2xl p-8 border transform transition-all duration-300 hover:shadow-3xl ${
+      theme === 'dark'
+        ? 'bg-gray-900 border-gray-700'
+        : 'bg-white border-gray-100'
+    }`}>
       <div className="mb-6 text-center">
-        <h2 className="text-3xl font-extrabold text-blue-600 tracking-tight">
+        <h2 className={`text-3xl font-extrabold tracking-tight ${
+          theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+        }`}>
           Customer Analysis Overview
         </h2>
-        <p className="text-gray-500 mt-2 text-sm">
+        <p className={`mt-2 text-sm ${
+          theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+        }`}>
           Monthly insights on job applications, interviews, and successful hires.
         </p>
       </div>
@@ -59,14 +70,15 @@ const CustomerAnalysis = () => {
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-          <XAxis dataKey="name" tick={{ fill: "#6b7280" }} />
-          <YAxis tick={{ fill: "#6b7280" }} />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? "#374151" : "#e5e7eb"} />
+          <XAxis dataKey="name" tick={{ fill: theme === 'dark' ? "#d1d5db" : "#6b7280" }} />
+          <YAxis tick={{ fill: theme === 'dark' ? "#d1d5db" : "#6b7280" }} />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#fff",
+              backgroundColor: theme === 'dark' ? "#1f2937" : "#fff",
               borderRadius: "10px",
               boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+              color: theme === 'dark' ? "#f9fafb" : "#000",
             }}
           />
           <Legend wrapperStyle={{ paddingTop: "20px" }} />
