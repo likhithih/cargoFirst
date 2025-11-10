@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { FaBuilding, FaPenFancy, FaCalendarAlt, FaClipboardList } from "react-icons/fa";
 
 const JobForm = () => {
   const { token } = useAuth();
@@ -37,8 +38,11 @@ const JobForm = () => {
       setToast({ show: true, message: "Job posted successfully!", type: "success" });
       setFormData({ title: "", description: "", lastDate: "", company: "", vacancies: "" });
     } catch (error) {
-      console.error((error && error.response && error.response.data) || (error && error.message) || error);
-      setToast({ show: true, message: (error && error.response && error.response.data && error.response.data.message) || "Error posting job", type: "error" });
+      setToast({
+        show: true,
+        message: error?.response?.data?.message || "Error posting job",
+        type: "error",
+      });
     } finally {
       setLoading(false);
       setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 3000);
@@ -46,7 +50,14 @@ const JobForm = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 transition-all duration-500 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-tr from-blue-50 to-blue-100'}`}>
+    <section
+      className={`min-h-screen px-4 md:px-16 lg:px-24 xl:px-32 flex flex-col items-center justify-center transition-all duration-500 ${
+        theme === "dark"
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+          : "bg-gradient-to-tr from-blue-50 to-blue-100"
+      }`}
+    >
+      {/* Toast Notification */}
       {toast.show && (
         <div
           className={`fixed top-6 right-6 p-4 rounded-lg shadow-lg text-white transform transition-transform duration-300 ${
@@ -57,90 +68,157 @@ const JobForm = () => {
         </div>
       )}
 
-      <div className={`w-full max-w-lg rounded-3xl shadow-2xl p-10 border transition-all duration-500 ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'}`}>
-        <h2 className={`text-4xl font-extrabold mb-8 text-center tracking-tight ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
-          Post a Job
-        </h2>
+      {/* Header */}
+      <p
+        className="text-center font-medium text-black px-10 py-2 rounded-full bg-pink-200 border border-pink-800 w-max mx-auto"
+      >
+        Job Form
+      </p>
+      <h3
+        className={`text-3xl font-semibold text-center mx-auto mt-4 ${
+          theme === "dark" ? "text-white" : "text-black"
+        }`}
+      >
+        Post a Job Opportunity
+      </h3>
+      <p
+        className={`text-center mt-2 max-w-md mx-auto ${
+          theme === "dark" ? "text-slate-300" : "text-black"
+        }`}
+      >
+        Share your job opening and reach the right talent quickly.
+      </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Job Title</label>
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="grid sm:grid-cols-2 gap-3 sm:gap-5 max-w-2xl mx-auto mt-16 w-full"
+      >
+        {/* Job Title */}
+        <div>
+          <p className={`mb-2 font-medium ${theme === "dark" ? "text-gray-200" : "text-black"}`}>Job Title</p>
+          <div
+            className={`flex items-center pl-3 rounded-lg overflow-hidden border ${
+              theme === "dark" ? "border-gray-600 focus-within:border-pink-500" : "border-gray-400 focus-within:border-pink-500"
+            }`}
+          >
+            <FaPenFancy
+              className={`w-5 h-5 mr-2 ${theme === "dark" ? "text-gray-300" : "text-black"}`}
+            />
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
               placeholder="Enter job title"
+              className={`w-full p-3 bg-transparent outline-none ${
+                theme === "dark" ? "text-gray-100 placeholder-gray-400" : "text-black placeholder-gray-500"
+              }`}
               required
             />
           </div>
+        </div>
 
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Job Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={5}
-              className={`w-full px-4 py-3 border rounded-xl shadow-sm resize-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
-              placeholder="Write a detailed job description..."
-              required
+        {/* Company Name */}
+        <div>
+          <p className={`mb-2 font-medium ${theme === "dark" ? "text-gray-200" : "text-black"}`}>Company Name</p>
+          <div
+            className={`flex items-center pl-3 rounded-lg overflow-hidden border ${
+              theme === "dark" ? "border-gray-600 focus-within:border-pink-500" : "border-gray-400 focus-within:border-pink-500"
+            }`}
+          >
+            <FaBuilding
+              className={`w-5 h-5 mr-2 ${theme === "dark" ? "text-gray-300" : "text-black"}`}
             />
-          </div>
-
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Last Date</label>
-            <input
-              type="date"
-              name="lastDate"
-              value={formData.lastDate}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100' : 'border-gray-300'}`}
-              required
-            />
-          </div>
-
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Company Name</label>
             <input
               type="text"
               name="company"
               value={formData.company}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
-              placeholder="Company hiring for this job"
+              placeholder="Company hiring"
+              className={`w-full p-3 bg-transparent outline-none ${
+                theme === "dark" ? "text-gray-100 placeholder-gray-400" : "text-black placeholder-gray-500"
+              }`}
               required
             />
           </div>
+        </div>
 
-          <div>
-            <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Number of Vacancies</label>
+        {/* Last Date */}
+        <div>
+          <p className={`mb-2 font-medium ${theme === "dark" ? "text-gray-200" : "text-black"}`}>Last Date</p>
+          <div
+            className={`flex items-center pl-3 rounded-lg overflow-hidden border ${
+              theme === "dark" ? "border-gray-600 focus-within:border-pink-500" : "border-gray-400 focus-within:border-pink-500"
+            }`}
+          >
+            <FaCalendarAlt
+              className={`w-5 h-5 mr-2 ${theme === "dark" ? "text-gray-300" : "text-black"}`}
+            />
+            <input
+              type="date"
+              name="lastDate"
+              value={formData.lastDate}
+              onChange={handleChange}
+              className={`w-full p-3 bg-transparent outline-none ${
+                theme === "dark" ? "text-gray-100" : "text-black"
+              }`}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Vacancies */}
+        <div>
+          <p className={`mb-2 font-medium ${theme === "dark" ? "text-gray-200" : "text-black"}`}>Number of Vacancies</p>
+          <div
+            className={`flex items-center pl-3 rounded-lg overflow-hidden border ${
+              theme === "dark" ? "border-gray-600 focus-within:border-pink-500" : "border-gray-400 focus-within:border-pink-500"
+            }`}
+          >
+            <FaClipboardList
+              className={`w-5 h-5 mr-2 ${theme === "dark" ? "text-gray-300" : "text-black"}`}
+            />
             <input
               type="number"
               name="vacancies"
               value={formData.vacancies}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400' : 'border-gray-300'}`}
-              placeholder="How many positions available?"
+              placeholder="How many positions?"
+              className={`w-full p-3 bg-transparent outline-none ${
+                theme === "dark" ? "text-gray-100 placeholder-gray-400" : "text-black placeholder-gray-500"
+              }`}
               required
             />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-3 rounded-xl font-semibold text-lg text-white transition-all duration-300 ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed shadow-inner"
-                : "bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl"
+        {/* Job Description */}
+        <div className="sm:col-span-2">
+          <p className={`mb-2 font-medium ${theme === "dark" ? "text-gray-200" : "text-black"}`}>Job Description</p>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={6}
+            placeholder="Write a detailed job description..."
+            className={`w-full p-3 bg-transparent outline-none rounded-lg overflow-hidden border focus:border-pink-500 resize-none ${
+              theme === "dark" ? "border-gray-600 text-gray-100 placeholder-gray-400" : "border-gray-400 text-black placeholder-gray-500"
             }`}
-          >
-            {loading ? "Posting..." : "Post Job"}
-          </button>
-        </form>
-      </div>
-    </div>
+            required
+          ></textarea>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="sm:col-span-2 w-max flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-10 py-3 rounded-full mx-auto"
+        >
+          {loading ? "Posting..." : "Post Job"}
+        </button>
+      </form>
+    </section>
   );
 };
 
